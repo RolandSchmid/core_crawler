@@ -3,7 +3,7 @@ from queue import Empty, Queue
 from time import sleep
 from typing import Generic, TypeVar
 
-from core.AbstractThread import AbstractThread
+from core.threads.AbstractThread import AbstractThread
 
 T = TypeVar('T')
 
