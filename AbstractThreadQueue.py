@@ -1,4 +1,4 @@
-from abc import abstractmethod, ABC
+from abc import abstractmethod
 from queue import Empty, Queue
 from time import sleep
 from typing import Generic, TypeVar
@@ -8,7 +8,7 @@ from core.AbstractThread import AbstractThread
 T = TypeVar('T')
 
 
-class AbstractThreadQueue(AbstractThread, ABC, Generic[T]):
+class AbstractThreadQueue(AbstractThread, Generic[T]):
 
     def __init__(self, name: str, queue: Queue[T]) -> None:
         super().__init__(name)
