@@ -1,5 +1,5 @@
 import logging
-from abc import ABC
+from abc import ABC, abstractmethod
 from time import sleep
 
 from fake_useragent import UserAgent
@@ -15,8 +15,9 @@ class WebReader:
     ua: UserAgent = UserAgent()
     session: Session = Session()
 
-    def __init__(self, base_url: str) -> None:
+    def __init__(self, base_url: str, cookies: dict | None) -> None:
         super().__init__()
+        self.cookies: dict | None = cookies
         self.session.headers['User-Agent'] = self.ua.random
         self.session.headers['Accept'] = '*/*'
         self.session.headers['Origin'] = base_url
@@ -25,7 +26,7 @@ class WebReader:
     def get_html(self, url, retry: bool = True) -> str or None:
 
         while True:
-            resp = self.session.get(url)
+            resp = self.session.get(url, cookies=self.cookies)
 
             if resp is not None and resp.status_code == 200:
                 return resp.text
@@ -45,4 +46,7 @@ class AbstractSpider(ABC):
 
     def __init__(self, base_url: str) -> None:
         self.base_url: str = base_url
-        self.reader: WebReader = WebReader(base_url)
+        self.reader: WebReader = WebReader(base_url, self.get_cookies())
+
+    def get_cookies(self) -> dict | None:
+        return None
