@@ -1,0 +1,48 @@
+import logging
+from abc import ABC
+from time import sleep
+
+from fake_useragent import UserAgent
+from requests import Session
+
+from core.tools.Logger import get_logger_main
+
+logger: logging.Logger = get_logger_main()
+
+
+# WebReader
+class WebReader:
+    ua: UserAgent = UserAgent()
+    session: Session = Session()
+
+    def __init__(self, base_url: str) -> None:
+        super().__init__()
+        self.session.headers['User-Agent'] = self.ua.random
+        self.session.headers['Accept'] = '*/*'
+        self.session.headers['Origin'] = base_url
+        self.session.headers['Referer'] = base_url
+
+    def get_html(self, url, retry: bool = True) -> str or None:
+
+        while True:
+            resp = self.session.get(url)
+
+            if resp is not None and resp.status_code == 200:
+                return resp.text
+
+            if not retry:
+                break
+            if resp is not None and resp.status_code == 404:
+                logger.error(f'URL not found: {url}')
+                break
+            sleep(2)
+            continue
+
+        return None
+
+
+class AbstractSpider(ABC):
+
+    def __init__(self, base_url: str) -> None:
+        self.base_url: str = base_url
+        self.reader: WebReader = WebReader(base_url)
