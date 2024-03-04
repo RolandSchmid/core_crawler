@@ -51,13 +51,6 @@ class BaseConfig:
         return config[section].getint(option, default)
 
     @classmethod
-    def get_path_timestamp(cls, section: str, option: str, default: Path, is_file: bool) -> str:
-        path: str = cls.get_config_str(section, option, str(default))
-        path = path.replace('{ts}', timestamp)
-        cls.__create_folder_structure(path, is_file)
-        return path
-
-    @classmethod
     def __get_config_int_or_none(cls, section: str, option: str, default: int | None) -> int | None:
         cls.__create_if_not_exists(section, option, str(default))
         result: str = config[section].get(option, default)
@@ -79,6 +72,13 @@ class BaseConfig:
                 config[section][option] = default
         with open(file_ini, 'w') as configfile:
             config.write(configfile)
+
+    @classmethod
+    def get_path_timestamp(cls, section: str, option: str, default: Path, is_file: bool) -> str:
+        path: str = cls.get_config_str(section, option, str(default))
+        path = path.replace('{ts}', timestamp)
+        cls.__create_folder_structure(path, is_file)
+        return path
 
     @classmethod
     def __create_folder_structure(cls, path: str, is_file: bool) -> None:
