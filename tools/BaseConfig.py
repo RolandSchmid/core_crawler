@@ -4,7 +4,7 @@ from datetime import datetime
 from pathlib import Path
 
 # Main
-default_name: str = 'buhurt_crawler'
+default_name: str = 'crawler'
 
 # Paths
 dir_root: Path = Path('..')
