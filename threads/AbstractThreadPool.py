@@ -1,10 +1,14 @@
+import logging
 from abc import abstractmethod
 from queue import Queue
 from typing import Generic, TypeVar
 
 from core.threads.AbstractThread import AbstractThread
+from core.tools.Logger import get_logger_main
 
 T = TypeVar('T')
+
+logger: logging.Logger = get_logger_main()
 
 
 class AbstractThreadPool(AbstractThread, Generic[T]):
@@ -16,6 +20,7 @@ class AbstractThreadPool(AbstractThread, Generic[T]):
         self.queue: Queue = queue
 
     def run(self) -> None:
+        logger.info(f'Starting ThreadPool {self.name}')
         for i in range(self.n_workers):
             worker: AbstractThread = self.run_worker(i)
             self.workers.append(worker)
