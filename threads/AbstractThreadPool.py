@@ -27,7 +27,6 @@ class AbstractThreadPool(AbstractThread, Generic[T]):
 
     def stop(self) -> None:
         super().stop()
-        # self.queue.join()
         for w in self.workers:
             w.stop()
 
