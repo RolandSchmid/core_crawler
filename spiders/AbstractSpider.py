@@ -1,5 +1,5 @@
 import logging
-from abc import ABC, abstractmethod
+from abc import ABC
 from time import sleep
 
 from fake_useragent import UserAgent

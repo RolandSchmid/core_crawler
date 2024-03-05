@@ -17,14 +17,16 @@ class AbstractThreadPool(AbstractThread, Generic[T]):
         super().__init__(name)
         self.n_workers: int = n_workers
         self.workers: list[AbstractThread] = list()
-        self.queue: Queue = queue
+        self.queue: Queue[T] = queue
 
     def run(self) -> None:
         logger.info(f'Starting ThreadPool {self.name}')
         for i in range(self.n_workers):
             worker: AbstractThread = self.run_worker(i)
             self.workers.append(worker)
-        self.queue.join()
+
+    def stop(self) -> None:
+        super().stop()
         for w in self.workers:
             w.stop()
 
