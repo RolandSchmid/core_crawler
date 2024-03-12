@@ -59,7 +59,7 @@ class BaseConfig:
         return int(result)
 
     @classmethod
-    def get_config_bool(cls, section, option, default) -> bool:
+    def get_config_bool(cls, section: str, option: str, default: bool) -> bool:
         cls.__create_if_not_exists(section, option, str(default))
         return config[section].getboolean(option, default)
 
