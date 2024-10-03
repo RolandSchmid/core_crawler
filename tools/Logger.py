@@ -39,25 +39,18 @@ def __init_logger(log_file: Path, name: str, file_level: int = logging.WARN, con
 
 log_file_main: Path = Path(BaseConfig.get_dir_out(), BaseConfig.get_name() + '_error.log')
 name_main: str = BaseConfig.get_name() + '_main'
-instance_main: logging.Logger | None = None
+log_file_success: Path = Path(BaseConfig.get_dir_out(), BaseConfig.get_name() + '_success.log')
+name_success: str = BaseConfig.get_name() + '_success'
+
+
+def init_loggers():
+    __init_logger(log_file_main, name_main, file_level=logging.WARN, console=True, cons_level=logging.DEBUG)
+    __init_logger(log_file_success, name_success, file_level=logging.INFO, console=True)
 
 
 def get_logger_main() -> logging.Logger:
-    global instance_main
-    if instance_main:
-        return instance_main
-    instance_main = __init_logger(log_file_main, name_main, file_level=logging.WARN, console=True, cons_level=logging.DEBUG)
-    return instance_main
-
-
-log_file_success: Path = Path(BaseConfig.get_dir_out(), BaseConfig.get_name() + '_success.log')
-name_success: str = BaseConfig.get_name() + '_success'
-instance_success: logging.Logger | None = None
+    return logging.getLogger(name_main)
 
 
 def get_logger_success() -> logging.Logger:
-    global instance_success
-    if instance_success:
-        return instance_success
-    instance_success = __init_logger(log_file_success, name_success, file_level=logging.INFO, console=True)
-    return instance_success
+    return logging.getLogger(name_success)
