@@ -25,7 +25,7 @@ class WebReader:
             for name, value in headers.items():
                 self.session.headers[name] = value
 
-    def get_html(self, url, retry: bool = True) -> str or None:
+    def get_content(self, url, retry: bool = True) -> str or None:
 
         while True:
             resp = self.session.get(url, cookies=self.cookies)
