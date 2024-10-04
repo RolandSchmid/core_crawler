@@ -1,6 +1,7 @@
 import logging
 from abc import ABC
 from time import sleep
+from typing import Callable
 
 from fake_useragent import UserAgent
 from requests import Session
@@ -25,10 +26,11 @@ class WebReader:
             for name, value in headers.items():
                 self.session.headers[name] = value
 
-    def get_content(self, url, retry: bool = True) -> str or None:
+    def __try(self, function: Callable, url: str, data, retry: bool) -> str or None:
 
+        tries: int = 0
         while True:
-            resp = self.session.get(url, cookies=self.cookies)
+            resp = function(url, json=data, cookies=self.cookies)
 
             if resp is not None and resp.status_code == 200:
                 return resp.text
@@ -38,10 +40,20 @@ class WebReader:
             if resp is not None and resp.status_code == 404:
                 logger.error(f'URL not found: {url}')
                 break
+            if tries == 3:
+                logger.error(f'Cound not get: {url}')
+                break
+            tries += 1
             sleep(2)
             continue
 
         return None
+
+    def get(self, url: str, retry: bool = True) -> str or None:
+        return self.__try(self.session.get, url, None, retry)
+
+    def post(self, url: str, data, retry: bool = True) -> str or None:
+        return self.__try(self.session.post, url, data, retry)
 
 
 class AbstractSpider(ABC):
