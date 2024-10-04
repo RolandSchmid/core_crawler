@@ -10,18 +10,20 @@ from core.tools.Logger import get_logger_main
 logger: logging.Logger = get_logger_main()
 
 
-# WebReader
 class WebReader:
     ua: UserAgent = UserAgent()
     session: Session = Session()
 
-    def __init__(self, base_url: str, cookies: dict | None) -> None:
+    def __init__(self, base_url: str, headers: dict[str, str] = None, cookies: dict = None) -> None:
         super().__init__()
         self.cookies: dict | None = cookies
         self.session.headers['User-Agent'] = self.ua.random
         self.session.headers['Accept'] = '*/*'
         self.session.headers['Origin'] = base_url
         self.session.headers['Referer'] = base_url
+        if headers is not None:
+            for name, value in headers.items():
+                self.session.headers[name] = value
 
     def get_html(self, url, retry: bool = True) -> str or None:
 
