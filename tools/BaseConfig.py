@@ -85,4 +85,4 @@ class BaseConfig:
         if is_file:
             path: str = os.path.dirname(path)
         if not os.path.exists(path):
-            os.makedirs(path)
+            os.makedirs(path, exist_ok=True)
