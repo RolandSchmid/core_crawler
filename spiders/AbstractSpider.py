@@ -60,7 +60,7 @@ class AbstractSpider(ABC):
 
     def __init__(self, base_url: str) -> None:
         self.base_url: str = base_url
-        self.reader: WebReader = WebReader(base_url, self.get_cookies())
+        self.reader: WebReader = WebReader(base_url, cookies=self.get_cookies())
 
     def get_cookies(self) -> dict | None:
         return None
