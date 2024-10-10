@@ -24,6 +24,9 @@ class AbstractThreadPool(AbstractThread, Generic[T]):
         for i in range(self.n_workers):
             worker: AbstractThread = self.run_worker(i)
             self.workers.append(worker)
+        # Wait for workers to finish
+        for worker in self.workers:
+            worker.join()
 
     def stop(self) -> None:
         super().stop()
