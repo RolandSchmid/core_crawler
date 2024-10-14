@@ -1,7 +1,7 @@
 import logging
 from abc import ABC
+from collections.abc import Callable
 from time import sleep
-from typing import Callable
 
 from fake_useragent import UserAgent
 from requests import Session
