@@ -41,7 +41,7 @@ class WebReader:
                 logger.error(f'URL not found: {url}')
                 break
             if tries == 3:
-                logger.error(f'Cound not get: {url}')
+                logger.error(f'Could not get: {url}')
                 break
             tries += 1
             sleep(2)
